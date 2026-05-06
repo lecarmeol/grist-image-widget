@@ -29,21 +29,17 @@
   grist.ready();
 
   grist.onRecord(function(record) {
-    if (!record) return;
+    const img = document.getElementById("image");
 
-    const attachments = record["Photo"];
-
-    if (attachments && attachments.length > 0) {
-      // prend la première image
-      const file = attachments[0];
-
-      // URL Grist interne
-      const url = grist.docApi.getAttachmentUrl(file.id);
-
-      document.getElementById("image").src = url;
-    } else {
-      document.getElementById("image").src = "";
+    if (!record || !record["Photo"] || record["Photo"].length === 0) {
+      img.src = "";
+      return;
     }
+
+    const file = record["Photo"][0];
+
+    // construction manuelle URL
+    img.src = `/attachments/${file.id}`;
   });
 </script>
 
