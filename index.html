@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f5f5f5;
+    }
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<img id="image" src="" alt="Aucune image">
+
+<script>
+  grist.ready();
+
+  grist.onRecord(function(record) {
+    if (!record) return;
+
+    const attachments = record["Photo"];
+
+    if (attachments && attachments.length > 0) {
+      // prend la première image
+      const file = attachments[0];
+
+      // URL Grist interne
+      const url = grist.docApi.getAttachmentUrl(file.id);
+
+      document.getElementById("image").src = url;
+    } else {
+      document.getElementById("image").src = "";
+    }
+  });
+</script>
+
+</body>
+</html>
